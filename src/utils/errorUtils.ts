@@ -22,3 +22,7 @@ export function notFoundError(message: string): AppError {
 export function unauthorizedError(message: string): AppError {
     return { type: "unauthorized", message };
 }
+
+export function badRequestError(message: string): AppError {
+    return { type: "bad_request", message };
+}

@@ -12,7 +12,7 @@ datasource db {
 
 model Image {
     id        Int      @id @default(autoincrement())
-    url       String
+    url       String   @unique
     createdAt DateTime @default(now())
 
     User    User[]
@@ -25,7 +25,6 @@ model Address {
     id        Int      @id @default(autoincrement())
     city      String
     state     String
-    updatedAt DateTime @default(now())
     createdAt DateTime @default(now())
 
     Company Company[]
@@ -37,7 +36,6 @@ model Address {
 model Cnpj {
     id        Int      @id @default(autoincrement())
     cnpj      String   @unique
-    updatedAt DateTime @default(now())
     createdAt DateTime @default(now())
 
     Company Company[]
@@ -49,7 +47,6 @@ model Airline {
     id        Int      @id @default(autoincrement())
     name      String   @unique
     initials  String   @unique
-    updatedAt DateTime @default(now())
     createdAt DateTime @default(now())
 
     Proposal Proposal[]
@@ -61,7 +58,6 @@ model AirPortBoarding {
     id        Int      @id @default(autoincrement())
     name      String
     initials  String   @unique
-    updatedAt DateTime @default(now())
     createdAt DateTime @default(now())
 
     Proposal Proposal[]
@@ -74,7 +70,6 @@ model AirPortLanding {
     id        Int      @id @default(autoincrement())
     name      String
     initials  String   @unique
-    updatedAt DateTime @default(now())
     createdAt DateTime @default(now())
 
     Proposal Proposal[]
@@ -155,7 +150,6 @@ model DateStartEnd {
     id        Int      @id @default(autoincrement())
     start     DateTime
     end       DateTime
-    updatedAt DateTime @default(now())
     createdAt DateTime @default(now())
 
     Proposal Proposal[]
