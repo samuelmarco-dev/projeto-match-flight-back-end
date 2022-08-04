@@ -1,0 +1,184 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+    provider = "prisma-client-js"
+}
+
+datasource db {
+    provider = "postgresql"
+    url      = env("DATABASE_URL")
+}
+
+model Image {
+    id        Int      @id @default(autoincrement())
+    url       String
+    createdAt DateTime @default(now())
+
+    User    User[]
+    Company Company[]
+
+    @@map("images")
+}
+
+model Address {
+    id        Int      @id @default(autoincrement())
+    city      String
+    state     String
+    updatedAt DateTime @default(now())
+    createdAt DateTime @default(now())
+
+    Company Company[]
+
+    @@unique([city, state])
+    @@map("address")
+}
+
+model Cnpj {
+    id        Int      @id @default(autoincrement())
+    cnpj      String   @unique
+    updatedAt DateTime @default(now())
+    createdAt DateTime @default(now())
+
+    Company Company[]
+
+    @@map("cnpj")
+}
+
+model Airline {
+    id        Int        @id @default(autoincrement())
+    name      String     @unique
+    initials  String     @unique
+    updatedAt DateTime   @default(now())
+    createdAt DateTime   @default(now())
+
+    Proposal  Proposal[]
+
+    @@map("airlines")
+}
+
+model AirPortBoarding {
+    id        Int        @id @default(autoincrement())
+    name      String
+    initials  String     @unique
+    updatedAt DateTime   @default(now())
+    createdAt DateTime   @default(now())
+
+    Proposal  Proposal[]
+
+    @@unique([name, initials])
+    @@map("airport_boarding")
+}
+
+model AirPortLanding {
+    id        Int        @id @default(autoincrement())
+    name      String
+    initials  String     @unique
+    updatedAt DateTime   @default(now())
+    createdAt DateTime   @default(now())
+
+    Proposal  Proposal[]
+
+    @@unique([name, initials])
+    @@map("airport_landing")
+}
+
+model User {
+    id        Int      @id @default(autoincrement())
+    imageId   Int
+    name      String
+    email     String   @unique
+    password  String
+    updatedAt DateTime @default(now())
+    createdAt DateTime @default(now())
+
+    Image   Image         @relation(fields: [imageId], references: [id])
+    Session SessionUser[]
+
+    @@map("users")
+}
+
+model SessionUser {
+    id        Int      @id @default(autoincrement())
+    userId    Int
+    token     String   @unique
+    isActive  Boolean  @default(true)
+    updatedAt DateTime @default(now())
+    createdAt DateTime @default(now())
+
+    User User @relation(fields: [userId], references: [id])
+
+    @@map("sessions_users")
+}
+
+model Company {
+    id        Int      @id @default(autoincrement())
+    addressId Int
+    cnpjId    Int
+    imageId   Int
+    name      String
+    email     String   @unique
+    password  String
+    type      String
+    updatedAt DateTime @default(now())
+    createdAt DateTime @default(now())
+
+    Address  Address          @relation(fields: [addressId], references: [id])
+    Cnpj     Cnpj             @relation(fields: [cnpjId], references: [id])
+    Image    Image            @relation(fields: [imageId], references: [id])
+    Session  SessionCompany[]
+    Proposal Proposal[]
+
+    @@map("companies")
+}
+
+model SessionCompany {
+    id        Int      @id @default(autoincrement())
+    companyId Int
+    token     String   @unique
+    isActive  Boolean  @default(true)
+    updatedAt DateTime @default(now())
+    createdAt DateTime @default(now())
+
+    Company Company @relation(fields: [companyId], references: [id])
+
+    @@map("sessions_companies")
+}
+
+model DateStartEnd {
+    id        Int        @id @default(autoincrement())
+    start     DateTime
+    end       DateTime
+    updatedAt DateTime   @default(now())
+    createdAt DateTime   @default(now())
+
+    Proposal  Proposal[]
+
+    @@unique([start, end])
+    @@map("date_start_end")
+}
+
+model Proposal {
+    id         Int      @id @default(autoincrement())
+    companyId  Int
+    airlineId  Int
+    dateId     Int
+    boardingId Int
+    landingId  Int
+    name       String
+    destiny    String
+    type       String
+    year       Int
+    isActive   Boolean  @default(true)
+    updatedAt  DateTime @default(now())
+    createdAt  DateTime @default(now())
+
+    Company  Company      @relation(fields: [companyId], references: [id])
+    Airline  Airline      @relation(fields: [airlineId], references: [id])
+    Date     DateStartEnd @relation(fields: [dateId], references: [id])
+    Boarding AirPortBoarding      @relation(fields: [boardingId], references: [id])
+    Landing  AirPortLanding      @relation(fields: [landingId], references: [id])
+
+    @@unique([companyId, dateId, type, destiny, name])
+    @@map("proposals")
+}
