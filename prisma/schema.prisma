@@ -46,38 +46,38 @@ model Cnpj {
 }
 
 model Airline {
-    id        Int        @id @default(autoincrement())
-    name      String     @unique
-    initials  String     @unique
-    updatedAt DateTime   @default(now())
-    createdAt DateTime   @default(now())
+    id        Int      @id @default(autoincrement())
+    name      String   @unique
+    initials  String   @unique
+    updatedAt DateTime @default(now())
+    createdAt DateTime @default(now())
 
-    Proposal  Proposal[]
+    Proposal Proposal[]
 
     @@map("airlines")
 }
 
 model AirPortBoarding {
-    id        Int        @id @default(autoincrement())
+    id        Int      @id @default(autoincrement())
     name      String
-    initials  String     @unique
-    updatedAt DateTime   @default(now())
-    createdAt DateTime   @default(now())
+    initials  String   @unique
+    updatedAt DateTime @default(now())
+    createdAt DateTime @default(now())
 
-    Proposal  Proposal[]
+    Proposal Proposal[]
 
     @@unique([name, initials])
     @@map("airport_boarding")
 }
 
 model AirPortLanding {
-    id        Int        @id @default(autoincrement())
+    id        Int      @id @default(autoincrement())
     name      String
-    initials  String     @unique
-    updatedAt DateTime   @default(now())
-    createdAt DateTime   @default(now())
+    initials  String   @unique
+    updatedAt DateTime @default(now())
+    createdAt DateTime @default(now())
 
-    Proposal  Proposal[]
+    Proposal Proposal[]
 
     @@unique([name, initials])
     @@map("airport_landing")
@@ -111,17 +111,23 @@ model SessionUser {
     @@map("sessions_users")
 }
 
+enum TypeCompany {
+    TravelAgency
+    ExchangeAgency
+    TravelAndExchangeAgency
+}
+
 model Company {
-    id        Int      @id @default(autoincrement())
+    id        Int         @id @default(autoincrement())
     addressId Int
     cnpjId    Int
     imageId   Int
     name      String
-    email     String   @unique
+    email     String      @unique
     password  String
-    type      String
-    updatedAt DateTime @default(now())
-    createdAt DateTime @default(now())
+    type      TypeCompany
+    updatedAt DateTime    @default(now())
+    createdAt DateTime    @default(now())
 
     Address  Address          @relation(fields: [addressId], references: [id])
     Cnpj     Cnpj             @relation(fields: [cnpjId], references: [id])
@@ -146,20 +152,27 @@ model SessionCompany {
 }
 
 model DateStartEnd {
-    id        Int        @id @default(autoincrement())
+    id        Int      @id @default(autoincrement())
     start     DateTime
     end       DateTime
-    updatedAt DateTime   @default(now())
-    createdAt DateTime   @default(now())
+    updatedAt DateTime @default(now())
+    createdAt DateTime @default(now())
 
-    Proposal  Proposal[]
+    Proposal Proposal[]
 
     @@unique([start, end])
     @@map("date_start_end")
 }
 
+enum TypeProposal {
+    Travel
+    Exchange
+    Backpack
+    Voluntary
+}
+
 model Proposal {
-    id         Int      @id @default(autoincrement())
+    id         Int          @id @default(autoincrement())
     companyId  Int
     airlineId  Int
     dateId     Int
@@ -167,17 +180,17 @@ model Proposal {
     landingId  Int
     name       String
     destiny    String
-    type       String
+    type       TypeProposal
     year       Int
-    isActive   Boolean  @default(true)
-    updatedAt  DateTime @default(now())
-    createdAt  DateTime @default(now())
+    isActive   Boolean      @default(true)
+    updatedAt  DateTime     @default(now())
+    createdAt  DateTime     @default(now())
 
-    Company  Company      @relation(fields: [companyId], references: [id])
-    Airline  Airline      @relation(fields: [airlineId], references: [id])
-    Date     DateStartEnd @relation(fields: [dateId], references: [id])
-    Boarding AirPortBoarding      @relation(fields: [boardingId], references: [id])
-    Landing  AirPortLanding      @relation(fields: [landingId], references: [id])
+    Company  Company         @relation(fields: [companyId], references: [id])
+    Airline  Airline         @relation(fields: [airlineId], references: [id])
+    Date     DateStartEnd    @relation(fields: [dateId], references: [id])
+    Boarding AirPortBoarding @relation(fields: [boardingId], references: [id])
+    Landing  AirPortLanding  @relation(fields: [landingId], references: [id])
 
     @@unique([companyId, dateId, type, destiny, name])
     @@map("proposals")

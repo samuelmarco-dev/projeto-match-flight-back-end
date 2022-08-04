@@ -5,6 +5,7 @@ import morgan from "morgan";
 import helmet from "helmet";
 
 import router from "./routers/index.js";
+import handleError from "./middlewares/errorMiddleware.js";
 
 const app = express();
 app.use(json());
@@ -16,5 +17,6 @@ if (process.env.NODE_ENV === "development") {
 }
 
 app.use(router);
+app.use(handleError);
 
 export default app;
