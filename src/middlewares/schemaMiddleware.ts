@@ -6,9 +6,7 @@ export default function validationSchema(schema: joi.ObjectSchema) {
         const validation = schema.validate(req.body, { abortEarly: false });
         const { error } = validation;
 
-        if (error) {
-            return res.status(422).send(error.details.map(detail => detail.message));
-        }
+        if (error) return res.status(422).send(error.details.map(detail => detail.message));
         next();
     }
 }

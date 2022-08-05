@@ -1,9 +1,8 @@
-import { compareEncryptedPassword, encrytedPassword } from '../utils/encryptedPassUtils.js';
+import { compareEncryptedPassword, encrytedPassword, compareEqualPassword } from '../utils/encryptedPassUtils.js';
 import { unauthorizedError, notFoundError } from '../utils/errorUtils.js';
 import * as sessionRepository from '../repositories/sessionsRepository.js';
 import * as imageRepository from '../repositories/imageRepository.js';
 import * as userRepository from '../repositories/userRepository.js';
-import compareEqualPassword from '../utils/errorPasswordUtils.js';
 import { generateJsonWebToken } from '../utils/tokenJwtUtils.js';
 import { Login, UserData } from '../interfaces/index.js';
 

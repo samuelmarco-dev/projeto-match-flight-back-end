@@ -1,7 +1,12 @@
-import { badRequestError } from "./errorUtils.js";
+import { badRequestError, wrongSchemaError } from "./errorUtils.js";
 
-export default function verifyReqBody(obj: Object){
-    for (let keys in obj){
-        if (!obj[keys]) throw badRequestError(`${keys} is required`);
+export function verifyReqBody(obj: Object){
+    for (let key in obj){
+        if (!obj[key]) throw badRequestError(`${key} is required`);
     }
+}
+
+export function emailIncludesUpperCase(string: string){
+    const compare = string.toLowerCase();
+    if(compare !== string) throw wrongSchemaError(`Email must not contain uppercase letters`);
 }
