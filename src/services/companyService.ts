@@ -1,12 +1,12 @@
 import { compareEncryptedPassword, compareEqualPassword, encrytedPassword } from '../utils/encryptedPassUtils.js';
+import { notFoundError, unauthorizedError } from '../utils/errorUtils.js';
+import { generateJsonWebToken } from '../utils/tokenJwtUtils.js';
 import { CompanyService, Login, TypeCompany } from '../interfaces/index.js';
 import * as companyRepository from '../repositories/companyRepository.js';
 import * as imageRepository from '../repositories/imageRepository.js';
 import * as addressRepository from '../repositories/addressRepository.js';
 import * as cnpjRepository from '../repositories/cnpjRepository.js';
 import * as sessionRepository from '../repositories/sessionsRepository.js';
-import { unauthorizedError } from '../utils/errorUtils.js';
-import { generateJsonWebToken } from '../utils/tokenJwtUtils.js';
 
 async function createCompany(body: CompanyService, type: TypeCompany){
     const { name, url, city, state, cnpj, email, password, confirmPassword } = body;
@@ -31,7 +31,7 @@ async function imageExistsOrNot(url: string){
 
     await imageRepository.createImage(url);
     const createImage = await imageRepository.findImageByUrl(url);
-    if(!createImage) throw unauthorizedError('Image not found');
+    if(!createImage) throw notFoundError('Image not found');
 
     return createImage.id;
 }
@@ -42,7 +42,7 @@ async function addressExistsOrNot(city: string, state: string){
 
     await addressRepository.createAddress(city, state);
     const createAddress = await addressRepository.findAddressByData(city, state);
-    if(!createAddress) throw unauthorizedError('Address not found');
+    if(!createAddress) throw notFoundError('Address not found');
 
     return createAddress.id;
 }
@@ -53,7 +53,7 @@ async function cnpjExistsOrNot(cnpj: string){
 
     await cnpjRepository.createRegistrationCnpj(cnpj);
     const createCnpj = await cnpjRepository.findRegistrationByCnpj(cnpj);
-    if(!createCnpj) throw unauthorizedError('Cnpj not found');
+    if(!createCnpj) throw notFoundError('Cnpj not found');
 
     return createCnpj.id;
 }
@@ -62,7 +62,7 @@ async function loginCompany(login: Login){
     const { email, password } = login;
 
     const companyExists = await companyRepository.findCompanyByEmail(email);
-    if (!companyExists) throw unauthorizedError('Company not found');
+    if (!companyExists) throw notFoundError('Company not found');
 
     const matchPassword = await compareEncryptedPassword(password, companyExists.password);
     if (!matchPassword) throw unauthorizedError('Password does not match');

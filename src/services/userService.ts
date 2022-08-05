@@ -1,10 +1,10 @@
 import { compareEncryptedPassword, encrytedPassword, compareEqualPassword } from '../utils/encryptedPassUtils.js';
 import { unauthorizedError, notFoundError } from '../utils/errorUtils.js';
+import { generateJsonWebToken } from '../utils/tokenJwtUtils.js';
+import { Login, UserData } from '../interfaces/index.js';
 import * as sessionRepository from '../repositories/sessionsRepository.js';
 import * as imageRepository from '../repositories/imageRepository.js';
 import * as userRepository from '../repositories/userRepository.js';
-import { generateJsonWebToken } from '../utils/tokenJwtUtils.js';
-import { Login, UserData } from '../interfaces/index.js';
 
 async function createUser(user: UserData) {
     const { url, email, password, confirmPassword } = user;
