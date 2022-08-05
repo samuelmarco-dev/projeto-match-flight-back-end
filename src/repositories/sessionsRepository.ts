@@ -5,3 +5,9 @@ export async function createSessionUser(userId: number, token: string){
         data: { userId, token }
     });
 }
+
+export async function createSessionCompany(companyId: number, token: string){
+    await prisma.sessionCompany.create({
+        data: { companyId, token }
+    });
+}
