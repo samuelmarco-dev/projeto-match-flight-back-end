@@ -4,10 +4,10 @@ dotenv.config();
 
 const secret = process.env.JWT_SECRET;
 
-export async function generateJsonWebToken(id: number){
-    const validity = { expiresIn: 21600 }; 
+export async function generateJsonWebToken(id: number, auth: string){
+    const validity = { expiresIn: 21600 };
     const token = jwt.sign(
-        { id }, secret, validity
+        { id, type: auth }, secret, validity
     );
 
     return token;
