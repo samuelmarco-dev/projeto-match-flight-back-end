@@ -1,6 +1,6 @@
 import { User } from "@prisma/client";
 
-export type AppErrorTypes = "conflict" | "not_found" | "unauthorized" | "bad_request";
+export type AppErrorTypes = "conflict" | "not_found" | "unauthorized" | "bad_request" | "wrong_schema";
 
 export type UserData = Omit<User, "id" | "updatedAt" | "createdAt" | "imageId"> & {
     url: string;
