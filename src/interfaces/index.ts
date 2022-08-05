@@ -17,6 +17,10 @@ export type CompanyData = Omit<Company, "id" | "updatedAt" | "createdAt" | "addr
     confirmPassword: string;
 };
 
+export type CompanyBody = Omit<Company, "id" | "updatedAt" | "createdAt">;
+
+export type CompanyService = Omit<CompanyData, "type">;
+
 export type UserBody = Omit<User, "id" | "updatedAt" | "createdAt">;
 
 export interface AppError {
