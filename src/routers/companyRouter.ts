@@ -7,7 +7,7 @@ import schemaLogin from "../schemas/schemaLogin.js";
 
 const companyRouter = Router();
 
-companyRouter.post('/sign-up', validationSchema(schemaCompany) ,createCompany);
-companyRouter.post('/sign-in', validationSchema(schemaLogin) ,loginCompany);
+companyRouter.post('/sign-up', validationSchema(schemaCompany), createCompany);
+companyRouter.post('/sign-in', validationSchema(schemaLogin), loginCompany);
 
 export default companyRouter;

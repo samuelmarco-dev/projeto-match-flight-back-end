@@ -13,10 +13,10 @@ async function createUser(user: UserData) {
     const userExists = await userRepository.findUserByEmail(email);
     if (userExists) throw unauthorizedError('User already exists');
 
-    await existsImageOrNot(url, user);
+    await imageExistsOrNot(url, user);
 }
 
-async function existsImageOrNot(url: string, obj: UserData){
+async function imageExistsOrNot(url: string, obj: UserData){
     const { name, email, password } = obj;
     const passwordEncrypted = await encrytedPassword(password);
 
@@ -43,7 +43,7 @@ async function loginUser(login: Login){
     const matchPassword = await compareEncryptedPassword(password, userExists.password);
     if (!matchPassword) throw unauthorizedError('Password does not match');
 
-    const token = await generateJsonWebToken(userExists.id);
+    const token = await generateJsonWebToken(userExists.id, 'userId');
     await sessionRepository.createSessionUser(userExists.id, token);
     return { token };
 }
