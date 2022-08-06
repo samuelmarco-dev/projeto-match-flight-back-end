@@ -13,7 +13,7 @@ async function createProposal(proposal: ProposalService, type: TypeProposal){
     const { companyId, airline, boarding, landing, start, end, name, destiny, year } = proposal;
 
     const companyFound = await companyRepository.findCompanyById(companyId);
-    if(!companyFound) unauthorizedError('Company not found');
+    if(!companyFound) notFoundError('Company not found');
     verifyYear(Number(year));
 
     const [airlineId, dateId, boardingId, landingId] = await Promise.all([
@@ -51,8 +51,8 @@ async function airlineExistsOrNot(airline: string){
 }
 
 async function dateExistsOrNot(start: string, end: string){
-    verifyYear(Number(start[2]));
-    verifyYear(Number(end[2]));
+    verifyYear(Number(start.split('/')[2]));
+    verifyYear(Number(end.split('/')[2]));
 
     const dateFound = await dateRepository.findDateProposal(start, end);
     if(dateFound) return dateFound.id;
@@ -92,8 +92,22 @@ async function landingExistsOrNot(landing: string){
     return createBoarding.id;
 }
 
+async function getProposalsByCompany(companyId: number){
+    const companyFound = await companyRepository.findCompanyById(companyId);
+    if(!companyFound) notFoundError('Company not found');
+
+    const proposalsCompany = await proposalRepository.findManyByCompany(companyId);
+    return { proposals: proposalsCompany };
+}
+
+async function getProposalsOfferedByCompanies(){
+    return { proposals: await proposalRepository.findAllProposals() };
+}
+
 const proposalService = {
-    createProposal
+    createProposal,
+    getProposalsByCompany,
+    getProposalsOfferedByCompanies
 }
 
 export default proposalService;

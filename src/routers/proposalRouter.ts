@@ -7,8 +7,8 @@ import schemaProposal from "../schemas/schemaProposal.js";
 
 const proposalRouter = Router();
 
-proposalRouter.post('/proposal', authUserOrCompany, validationSchema(schemaProposal), createProposal);
-proposalRouter.get('/company/proposals', authUserOrCompany, getProposalsByCompany);
-proposalRouter.get('/user/proposals', authUserOrCompany, getProposalsCompany);
+proposalRouter.post('/proposal', validationSchema(schemaProposal), authUserOrCompany, createProposal);
+proposalRouter.get('/proposals/company/:id', authUserOrCompany, getProposalsByCompany);
+proposalRouter.get('/proposals/user', authUserOrCompany, getProposalsCompany);
 
 export default proposalRouter;
