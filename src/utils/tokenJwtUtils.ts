@@ -4,7 +4,7 @@ dotenv.config();
 
 import * as sessionRepository from '../repositories/sessionsRepository.js';
 import { TokenPayload } from '../interfaces/index.js';
-import { unauthorizedError } from './errorUtils.js';
+import { notFoundError, unauthorizedError } from './errorUtils.js';
 
 const secret = process.env.JWT_SECRET;
 
@@ -36,12 +36,12 @@ export async function verifyJsonWebToken(token: string){
 async function authTypeUserOrCompany(type: string, token: string){
     if (type === 'userId'){
         const sessionUser = await sessionRepository.findSessionUser(token);
-        if (!sessionUser) throw unauthorizedError('Session user not found');
+        if (!sessionUser) throw notFoundError('Session user not found');
         return sessionUser;
     }
     if (type === 'companyId'){
         const companySession = await sessionRepository.findSessionCompany(token);
-        if (!companySession) throw unauthorizedError('Session company not found');
+        if (!companySession) throw notFoundError('Session company not found');
         return companySession;
     }
 
