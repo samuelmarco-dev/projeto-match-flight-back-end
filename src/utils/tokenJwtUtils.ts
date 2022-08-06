@@ -23,7 +23,10 @@ export async function verifyJsonWebToken(token: string){
         const { id, type } = verification as TokenPayload;
         if (!type || !id || !verification) throw unauthorizedError('Invalid token');
 
-        return await authTypeUserOrCompany(type, token);
+        return {
+            type: type,
+            session: await authTypeUserOrCompany(type, token)
+        }
     } catch (error) {
         if(error.name === 'TokenExpiredError') throw unauthorizedError('Token expired');
         throw unauthorizedError('Invalid token');

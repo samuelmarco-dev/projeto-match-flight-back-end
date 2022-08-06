@@ -8,8 +8,9 @@ export default async function authUserOrCompany(req: Request, res: Response, nex
     const token = authorization?.replace('Bearer ', '').trim();
     if(!token) throw unauthorizedError('Missing token in request authorization');
 
-    const session = await verifyJsonWebToken(token);
+    const { type, session } = await verifyJsonWebToken(token);
     res.locals.session = session;
+    res.locals.type = type;
 
     next();
 }
