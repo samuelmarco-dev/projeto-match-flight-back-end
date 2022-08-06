@@ -12,3 +12,9 @@ export async function createCompany(company: CompanyBody){
         data: { ...company }
     });
 }
+
+export async function findCompanyById(id: number){
+    return await prisma.company.findUnique({
+        where: { id }
+    });
+}
