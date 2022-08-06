@@ -35,9 +35,7 @@ export async function getProposalsByCompany(req: Request, res: Response){
 }
 
 export async function getProposalsCompany(req: Request, res: Response){
-    const session: SessionUser = res.locals.session;
     const typeAuth: TypeSession = res.locals.type;
-
     if(!typeAuth || typeAuth !== 'userId') throw unauthorizedError('You are not authorized to create a proposal');
 
     const proposals = await proposalService.getProposalsOfferedByCompanies();
