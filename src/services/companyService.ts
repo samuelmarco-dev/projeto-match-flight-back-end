@@ -1,5 +1,5 @@
 import { compareEncryptedPassword, compareEqualPassword, encrytedPassword } from '../utils/encryptedPassUtils.js';
-import { notFoundError, unauthorizedError } from '../utils/errorUtils.js';
+import { conflictError, notFoundError, unauthorizedError } from '../utils/errorUtils.js';
 import { generateJsonWebToken } from '../utils/tokenJwtUtils.js';
 import { CompanyService, Login, TypeCompany } from '../interfaces/index.js';
 import * as companyRepository from '../repositories/companyRepository.js';
@@ -13,7 +13,7 @@ async function createCompany(body: CompanyService, type: TypeCompany){
     compareEqualPassword(password, confirmPassword);
 
     const companyExists = await companyRepository.findCompanyByEmail(email);
-    if(companyExists) throw unauthorizedError('Company already exists');
+    if(companyExists) throw conflictError('Company already exists');
 
     const encryptedPassword = await encrytedPassword(password);
     const [imageId, addressId, cnpjId] = await Promise.all([

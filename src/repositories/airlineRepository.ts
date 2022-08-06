@@ -2,7 +2,7 @@ import prisma from "../config/database.js";
 
 export async function findAirline(airline: string, initials: string){
     return await prisma.airline.findUnique({
-        where: { name: airline, initials }
+        where: { name_initials: { name: airline, initials } }
     });
 }
 

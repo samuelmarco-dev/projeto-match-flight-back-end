@@ -1,5 +1,5 @@
 import { compareEncryptedPassword, encrytedPassword, compareEqualPassword } from '../utils/encryptedPassUtils.js';
-import { unauthorizedError, notFoundError } from '../utils/errorUtils.js';
+import { unauthorizedError, notFoundError, conflictError } from '../utils/errorUtils.js';
 import { generateJsonWebToken } from '../utils/tokenJwtUtils.js';
 import { Login, UserData } from '../interfaces/index.js';
 import * as sessionRepository from '../repositories/sessionsRepository.js';
@@ -11,7 +11,7 @@ async function createUser(user: UserData) {
     compareEqualPassword(password, confirmPassword);
 
     const userExists = await userRepository.findUserByEmail(email);
-    if (userExists) throw unauthorizedError('User already exists');
+    if (userExists) throw conflictError('User already exists');
 
     await imageExistsOrNot(url, user);
 }
@@ -38,7 +38,7 @@ async function loginUser(login: Login){
     const { email, password } = login;
 
     const userExists = await userRepository.findUserByEmail(email);
-    if (!userExists) throw unauthorizedError('User not found');
+    if (!userExists) throw notFoundError('User not found');
 
     const matchPassword = await compareEncryptedPassword(password, userExists.password);
     if (!matchPassword) throw unauthorizedError('Password does not match');

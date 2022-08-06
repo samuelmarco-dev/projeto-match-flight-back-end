@@ -23,7 +23,7 @@ async function createProposal(proposal: ProposalService, type: TypeProposal){
     const proposalFound = await proposalRepository.findProposalCompany(companyId, dateId, type, destiny, name);
     if(proposalFound) throw conflictError('Proposal already exists');
 
-    await proposalRepository.createProposalCompany({ companyId, dateId, airlineId, boardingId, landingId, type, destiny, name, year });
+    await proposalRepository.createProposalCompany({ companyId, dateId, airlineId, boardingId, landingId, type, destiny, name, year: Number(year) });
 }
 
 function verifyYear(year: number) {

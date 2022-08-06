@@ -27,7 +27,7 @@ export async function getProposalsByCompany(req: Request, res: Response){
     const { id } = req.params;
 
     const message = 'The identification of the company in the authentication does not match';
-    if(!typeAuth || typeAuth !== 'companyId') throw unauthorizedError('You are not authorized to create a proposal');
+    if(!typeAuth || typeAuth !== 'companyId') throw unauthorizedError('You are not authorized to search for proposals');
     if(session.companyId !== Number(id)) return res.status(401).send(message);
 
     const proposals = await proposalService.getProposalsByCompany(Number(id));
@@ -36,7 +36,7 @@ export async function getProposalsByCompany(req: Request, res: Response){
 
 export async function getProposalsCompany(req: Request, res: Response){
     const typeAuth: TypeSession = res.locals.type;
-    if(!typeAuth || typeAuth !== 'userId') throw unauthorizedError('You are not authorized to create a proposal');
+    if(!typeAuth || typeAuth !== 'userId') throw unauthorizedError('You are not authorized to search for proposals');
 
     const proposals = await proposalService.getProposalsOfferedByCompanies();
     res.status(200).send(proposals);
