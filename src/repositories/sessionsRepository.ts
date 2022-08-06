@@ -11,3 +11,15 @@ export async function createSessionCompany(companyId: number, token: string){
         data: { companyId, token }
     });
 }
+
+export async function findSessionUser(token: string){
+    return await prisma.sessionUser.findUnique({
+        where: { token }
+    });
+}
+
+export async function findSessionCompany(token: string){
+    return await prisma.sessionCompany.findUnique({
+        where: { token }
+    });
+}
