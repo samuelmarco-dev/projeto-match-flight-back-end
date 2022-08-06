@@ -8,7 +8,7 @@
         "build": "tsc",
         "start": "node dist/server.js",
         "dev": "nodemon src/server.ts",
-        "dev:test": "dotenv -e .test.env nodemon src/server.ts",
+        "dev:test": "dotenv -e .test.env prisma migrate dev && dotenv -e .test.env nodemon src/server.ts",
         "test": "dotenv -e .test.env prisma migrate dev && NODE_OPTIONS=--experimental-vm-modules dotenv -e .test.env jest -- -i --coverage",
         "test:integration": "NODE_OPTIONS=--experimental-vm-modules dotenv -e .test.env jest -- -i --testPathPattern=tests/integration",
         "test:unit": "NODE_OPTIONS=--experimental-vm-modules dotenv -e .test.env jest -- -i --coverage --testPathPattern=tests/unitary"
