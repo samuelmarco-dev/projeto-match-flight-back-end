@@ -50,3 +50,5 @@ export interface TokenPayload {
     iat: number;
     expiresIn: number;
 }
+
+export type TypeSession = "userId" | "companyId";
