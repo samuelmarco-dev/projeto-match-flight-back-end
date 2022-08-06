@@ -1,4 +1,4 @@
-import { User, Company } from "@prisma/client";
+import { User, Company, Proposal } from "@prisma/client";
 
 export type AppErrorTypes = "conflict" | "not_found" | "unauthorized" | "bad_request" | "wrong_schema";
 
@@ -32,6 +32,17 @@ export interface Login {
     email: string;
     password: string;
 }
+
+export type TypeProposal = "Travel" | "Exchange" | "Backpack" | "Voluntary";
+
+export type ProposalData = Omit<Proposal, "id" | "airlineId" | "dateId" | "boardingId" | "landingId" |
+"isActive" | "updatedAt" | "createdAt"> & {
+    airline: string;
+    boarding: string;
+    landing: string;
+    start: string;
+    end: string;
+};
 
 export interface TokenPayload {
     id: number;
