@@ -13,3 +13,15 @@ export async function createProposalCompany(proposal: ProposalBody){
         data: { ...proposal }
     });
 }
+
+export async function findManyByCompany(id: number){
+    return await prisma.proposal.findMany({
+        where: { companyId: id, isActive: true }
+    });
+}
+
+export async function findAllProposals(){
+    return await prisma.proposal.findMany({
+        where: { isActive: true }
+    });
+}
