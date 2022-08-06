@@ -44,6 +44,10 @@ export type ProposalData = Omit<Proposal, "id" | "airlineId" | "dateId" | "board
     end: string;
 };
 
+export type ProposalService = Omit<ProposalData, "type">;
+
+export type ProposalBody = Omit<Proposal, "id" | "isActive" | "updatedAt" | "createdAt">;
+
 export interface TokenPayload {
     id: number;
     type: string;
