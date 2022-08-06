@@ -32,3 +32,10 @@ export interface Login {
     email: string;
     password: string;
 }
+
+export interface TokenPayload {
+    id: number;
+    type: string;
+    iat: number;
+    expiresIn: number;
+}
