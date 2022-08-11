@@ -13,6 +13,7 @@ const schemaProposal: joi.ObjectSchema<ProposalData> = joi.object({
     landing: joi.string().pattern(regexIATA).required(),
     start: joi.string().pattern(regexData).required(),
     end: joi.string().pattern(regexData).required(),
+    url: joi.string().uri().required().trim(),
     name: joi.string().required(),
     destiny: joi.string().pattern(regexCity).required(),
     type: joi.equal(

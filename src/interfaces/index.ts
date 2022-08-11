@@ -36,12 +36,13 @@ export interface Login {
 export type TypeProposal = "Travel" | "Exchange" | "Backpack" | "Voluntary";
 
 export type ProposalData = Omit<Proposal, "id" | "airlineId" | "dateId" | "boardingId" | "landingId" |
-"isActive" | "updatedAt" | "createdAt"> & {
+"imageId" | "isActive" | "updatedAt" | "createdAt"> & {
     airline: string;
     boarding: string;
     landing: string;
     start: string;
     end: string;
+    url: string;
 };
 
 export type ProposalService = Omit<ProposalData, "type">;
