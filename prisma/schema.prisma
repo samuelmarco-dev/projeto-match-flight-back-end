@@ -15,8 +15,9 @@ model Image {
     url       String   @unique
     createdAt DateTime @default(now())
 
-    User    User[]
-    Company Company[]
+    User     User[]
+    Company  Company[]
+    Proposal Proposal[]
 
     @@map("images")
 }
@@ -173,6 +174,7 @@ model Proposal {
     dateId     Int
     boardingId Int
     landingId  Int
+    imageId    Int
     name       String
     destiny    String
     type       TypeProposal
@@ -186,6 +188,7 @@ model Proposal {
     Date     DateStartEnd    @relation(fields: [dateId], references: [id])
     Boarding AirPortBoarding @relation(fields: [boardingId], references: [id])
     Landing  AirPortLanding  @relation(fields: [landingId], references: [id])
+    Image    Image           @relation(fields: [imageId], references: [id])
 
     @@unique([companyId, dateId, type, destiny, name])
     @@map("proposals")
