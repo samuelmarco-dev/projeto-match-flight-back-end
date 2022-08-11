@@ -7,31 +7,26 @@ import * as imageRepository from '../repositories/imageRepository.js';
 import * as userRepository from '../repositories/userRepository.js';
 
 async function createUser(user: UserData) {
-    const { url, email, password, confirmPassword } = user;
+    const { name, url, email, password, confirmPassword } = user;
     compareEqualPassword(password, confirmPassword);
 
     const userExists = await userRepository.findUserByEmail(email);
     if (userExists) throw conflictError('User already exists');
 
-    await imageExistsOrNot(url, user);
+    const passwordEncrypted = await encrytedPassword(password);
+    const imageId = await imageExistsOrNot(url);
+    await userRepository.createUser({ name, email, password: passwordEncrypted, imageId });
 }
 
-async function imageExistsOrNot(url: string, obj: UserData){
-    const { name, email, password } = obj;
-    const passwordEncrypted = await encrytedPassword(password);
-
+async function imageExistsOrNot(url: string){
     const imageExists = await imageRepository.findImageByUrl(url);
-    if(imageExists){
-        await userRepository.createUser({ name, email, password: passwordEncrypted, imageId: imageExists.id });
-        return;
-    }
-    await imageRepository.createImage(url);
+    if(imageExists) return imageExists.id;
 
+    await imageRepository.createImage(url);
     const createImage = await imageRepository.findImageByUrl(url);
     if(!createImage) throw notFoundError('Image not found');
 
-    await userRepository.createUser({ name, email, password: passwordEncrypted, imageId: createImage.id });
-    return;
+    return createImage.id;
 }
 
 async function loginUser(login: Login){

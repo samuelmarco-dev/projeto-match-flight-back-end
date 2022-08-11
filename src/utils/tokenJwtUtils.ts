@@ -9,7 +9,7 @@ import { notFoundError, unauthorizedError } from './errorUtils.js';
 const secret = process.env.JWT_SECRET;
 
 export async function generateJsonWebToken(id: number, auth: string){
-    const validity = { expiresIn: 21600 };
+    const validity = { expiresIn: 3600*3 };
     const token = jwt.sign(
         { id, type: auth }, secret, validity
     );
