@@ -6,24 +6,26 @@ import * as dateRepository from "../repositories/dateRepository.js";
 import * as boardingRepository from "../repositories/boardingRepository.js";
 import * as landingRepository from "../repositories/landingRepository.js";
 import * as proposalRepository from "../repositories/proposalRepository.js";
+import * as imageRepository from "../repositories/imageRepository.js";
 import { ProposalService, TypeProposal } from "../interfaces/index.js";
 import { conflictError, notFoundError, unauthorizedError, wrongSchemaError } from "../utils/errorUtils.js";
 
 async function createProposal(proposal: ProposalService, type: TypeProposal){
-    const { companyId, airline, boarding, landing, start, end, name, destiny, year } = proposal;
+    const { companyId, airline, boarding, landing, start, end, url, name, destiny, year } = proposal;
 
     const companyFound = await companyRepository.findCompanyById(companyId);
     if(!companyFound) notFoundError('Company not found');
     verifyYear(Number(year));
 
-    const [airlineId, dateId, boardingId, landingId] = await Promise.all([
-        airlineExistsOrNot(airline), dateExistsOrNot(start, end), boardingExistsOrNot(boarding), landingExistsOrNot(landing)
+    const [airlineId, dateId, boardingId, landingId, imageId] = await Promise.all([
+        airlineExistsOrNot(airline), dateExistsOrNot(start, end), boardingExistsOrNot(boarding),
+        landingExistsOrNot(landing), imageExistsOrNot(url)
     ]);
 
     const proposalFound = await proposalRepository.findProposalCompany(companyId, dateId, type, destiny, name);
     if(proposalFound) throw conflictError('Proposal already exists');
 
-    await proposalRepository.createProposalCompany({ companyId, dateId, airlineId, boardingId, landingId, type, destiny, name, year: Number(year) });
+    await proposalRepository.createProposalCompany({ companyId, dateId, airlineId, boardingId, landingId, imageId, type, destiny, name, year: Number(year) });
 }
 
 function verifyYear(year: number) {
@@ -90,6 +92,17 @@ async function landingExistsOrNot(landing: string){
     if (!createBoarding) notFoundError('Boarding not found');
 
     return createBoarding.id;
+}
+
+async function imageExistsOrNot(url: string){
+    const imageFound = await imageRepository.findImageByUrl(url);
+    if(imageFound) return imageFound.id;
+
+    await imageRepository.createImage(url);
+    const createImage = await imageRepository.findImageByUrl(url);
+    if(!createImage) throw notFoundError('Image not found');
+
+    return createImage.id;
 }
 
 async function getProposalsByCompany(companyId: number){

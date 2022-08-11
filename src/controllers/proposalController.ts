@@ -9,7 +9,7 @@ import { unauthorizedError } from '../utils/errorUtils.js';
 export async function createProposal(req: Request, res: Response){
     const session: SessionCompany = res.locals.session;
     const typeAuth: TypeSession = res.locals.type;
-    const { companyId, airline, boarding, landing, start, end, name, destiny, type, year }: ProposalData = req.body;
+    const { companyId, airline, boarding, landing, start, end, name, destiny, type, year, url }: ProposalData = req.body;
 
     if(!typeAuth || typeAuth !== 'companyId') throw unauthorizedError('You are not authorized to create a proposal');
     verifyReqBody(req.body);
@@ -17,7 +17,7 @@ export async function createProposal(req: Request, res: Response){
     const message = 'The identification of the company in the authentication does not match';
     if (session.companyId !== companyId) return res.status(401).send(message);
 
-    await proposalService.createProposal({ companyId, airline, boarding, landing, start, end, name, destiny, year }, type);
+    await proposalService.createProposal({ companyId, airline, boarding, landing, start, end, name, destiny, year, url }, type);
     res.sendStatus(201);
 }
 
