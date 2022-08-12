@@ -49,7 +49,7 @@ async function addressExistsOrNot(city: string, state: string){
 
 async function cnpjExistsOrNot(cnpj: string){
     const cnpjFound = await cnpjRepository.findRegistrationByCnpj(cnpj);
-    if(cnpjFound) return cnpjFound.id;
+    if(cnpjFound) throw conflictError('CNPJ already exists');
 
     await cnpjRepository.createRegistrationCnpj(cnpj);
     const createCnpj = await cnpjRepository.findRegistrationByCnpj(cnpj);

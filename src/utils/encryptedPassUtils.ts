@@ -11,6 +11,6 @@ export async function encrytedPassword(password: string){
     return await bcrypt.hash(password, salt);
 }
 
-export async function compareEncryptedPassword(passwordEncrypted: string, password: string){
-    return await bcrypt.compare(passwordEncrypted, password);
+export async function compareEncryptedPassword(password: string, passwordEncrypted: string){
+    return await bcrypt.compare(password, passwordEncrypted);
 }
