@@ -5,12 +5,13 @@ import prisma from '../../src/config/database.js';
 import { UserData } from '../../src/interfaces/index.js';
 
 function generateUser(): UserData {
-    const password = faker.internet.password()
+    const password = faker.internet.password();
+    const email = faker.internet.email();
 
     return {
         url: faker.image.imageUrl(),
         name: faker.name.findName(),
-        email: faker.internet.email('user', 'test', 'gmail.com'),
+        email: email.toLowerCase(),
         password: password,
         confirmPassword: password
     }

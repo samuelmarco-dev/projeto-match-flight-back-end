@@ -10,7 +10,7 @@
         "dev": "nodemon src/server.ts",
         "dev:test": "dotenv -e .test.env nodemon src/server.ts",
         "test": "dotenv -e .test.env prisma migrate dev && NODE_OPTIONS=--experimental-vm-modules dotenv -e .test.env jest -- -i --coverage",
-        "test:integration": "dotenv -e .test.env prisma db seed && NODE_OPTIONS=--experimental-vm-modules dotenv -e .test.env jest -- -i --testPathPattern=tests/integration",
+        "test:integration": "dotenv -e .test.env prisma migrate dev && NODE_OPTIONS=--experimental-vm-modules dotenv -e .test.env jest -- -i --testPathPattern=tests/integration",
         "test:unit": "NODE_OPTIONS=--experimental-vm-modules dotenv -e .test.env jest -- -i --coverage --testPathPattern=tests/unitary"
     },
     "prisma": {
