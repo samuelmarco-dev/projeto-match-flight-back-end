@@ -4,7 +4,6 @@ import supertest from "supertest";
 import app from "../../src/app.js";
 import prisma from "../../src/config/database.js";
 import userFactory from "../factories/userFactory.js";
-import userRepository from "../../src/repositories/userRepository.js";
 import { deleteAllTables, deleteTablesWithoutDependency } from "../factories/scenario.js";
 
 beforeAll(async()=> {
@@ -77,7 +76,7 @@ describe('POST /user/sign-in', ()=> {
 
     it('given a user existing, but with incorrect password should return a status code 401', async ()=> {
         const login = {
-            email: 'admintest@gmail.com', password: 'umasenhaqualquer'
+            email: 'adminusertest@gmail.com', password: 'umasenhaqualquer'
         }
 
         const response = await supertest(app).post('/user/sign-in').send(login);

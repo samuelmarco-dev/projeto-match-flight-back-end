@@ -11,7 +11,7 @@ function generateUser(): UserData {
     return {
         url: faker.image.imageUrl(),
         name: faker.name.lastName(),
-        email: 'admintest@gmail.com',
+        email: 'adminusertest@gmail.com',
         password: password,
         confirmPassword: password
     }
