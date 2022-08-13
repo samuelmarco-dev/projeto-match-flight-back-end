@@ -26,7 +26,7 @@ async function createCompany(body: CompanyService, type: TypeCompany){
     });
 }
 
-async function addressExistsOrNot(city: string, state: string){
+export async function addressExistsOrNot(city: string, state: string){
     const addressFound = await addressRepository.findAddressByData(city, state);
     if(addressFound) return addressFound.id;
 
@@ -37,7 +37,7 @@ async function addressExistsOrNot(city: string, state: string){
     return createAddress.id;
 }
 
-async function cnpjExistsOrNot(cnpj: string){
+export async function cnpjExistsOrNot(cnpj: string){
     const cnpjFound = await cnpjRepository.findRegistrationByCnpj(cnpj);
     if(cnpjFound) throw conflictError('CNPJ already exists');
 

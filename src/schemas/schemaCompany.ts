@@ -15,7 +15,7 @@ const schemaCompany: joi.ObjectSchema<CompanyData> = joi.object({
     ).required(),
     email: joi.string().email().required().trim(),
     password: joi.string().required().trim(),
-    confirmPassword: joi.valid(joi.ref('password')).required(),
+    confirmPassword: joi.string().valid(joi.ref('password')).required()
 });
 
 export default schemaCompany;
