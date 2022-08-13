@@ -11,3 +11,10 @@ export async function createRegistrationCnpj(cnpj: string){
         data: { cnpj }
     });
 }
+
+const cnpjRepository = {
+    findRegistrationByCnpj,
+    createRegistrationCnpj
+}
+
+export default cnpjRepository;

@@ -11,3 +11,10 @@ export async function createAirline(airline: string, initials: string){
         data: { name: airline, initials }
     });
 }
+
+const airlineRepository = {
+    findAirline,
+    createAirline
+}
+
+export default airlineRepository;

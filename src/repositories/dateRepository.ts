@@ -11,3 +11,10 @@ export async function createDateStartEnd(start: string, end: string){
         data: { start, end }
     });
 }
+
+const dateRepository = {
+    findDateProposal,
+    createDateStartEnd
+}
+
+export default dateRepository;

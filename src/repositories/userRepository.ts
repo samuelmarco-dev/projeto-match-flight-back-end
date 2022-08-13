@@ -12,3 +12,10 @@ export async function createUser(user: UserBody){
         data: { ...user }
     });
 }
+
+const userRepository = {
+    findUserByEmail,
+    createUser
+}
+
+export default userRepository;

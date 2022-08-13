@@ -11,3 +11,10 @@ export async function createImage(url: string){
         data: { url }
     });
 }
+
+const imageRepository = {
+    findImageByUrl,
+    createImage
+}
+
+export default imageRepository;

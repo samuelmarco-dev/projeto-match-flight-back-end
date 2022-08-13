@@ -18,3 +18,11 @@ export async function findCompanyById(id: number){
         where: { id }
     });
 }
+
+const companyRepository = {
+    findCompanyByEmail,
+    createCompany,
+    findCompanyById
+}
+
+export default companyRepository;

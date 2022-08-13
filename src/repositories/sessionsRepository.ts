@@ -23,3 +23,12 @@ export async function findSessionCompany(token: string){
         where: { token }
     });
 }
+
+const sessionRepository = {
+    createSessionUser,
+    createSessionCompany,
+    findSessionUser,
+    findSessionCompany
+}
+
+export default sessionRepository;

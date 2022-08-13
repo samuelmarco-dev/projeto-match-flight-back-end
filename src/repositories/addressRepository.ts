@@ -11,3 +11,10 @@ export async function createAddress(city: string, state: string){
         data: { city, state }
     });
 }
+
+const addressRepository = {
+    findAddressByData,
+    createAddress
+}
+
+export default addressRepository;

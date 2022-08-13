@@ -25,3 +25,12 @@ export async function findAllProposals(){
         where: { isActive: true }
     });
 }
+
+const proposalRepository = {
+    findProposalCompany,
+    createProposalCompany,
+    findManyByCompany,
+    findAllProposals
+}
+
+export default proposalRepository;

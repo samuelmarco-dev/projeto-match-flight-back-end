@@ -11,3 +11,10 @@ export async function createAirportBoarding(name: string, initials: string){
         data: { name, initials }
     });
 }
+
+const airportBoardingRepository = {
+    findAirportBoarding,
+    createAirportBoarding
+}
+
+export default airportBoardingRepository;
