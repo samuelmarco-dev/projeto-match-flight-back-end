@@ -7,6 +7,7 @@ import * as imageRepository from '../repositories/imageRepository.js';
 import * as addressRepository from '../repositories/addressRepository.js';
 import * as cnpjRepository from '../repositories/cnpjRepository.js';
 import * as sessionRepository from '../repositories/sessionsRepository.js';
+import { imageExistsOrNot } from './userService.js';
 
 async function createCompany(body: CompanyService, type: TypeCompany){
     const { name, url, city, state, cnpj, email, password, confirmPassword } = body;
@@ -23,17 +24,6 @@ async function createCompany(body: CompanyService, type: TypeCompany){
     await companyRepository.createCompany({
         name, imageId, addressId, cnpjId, email, type, password: encryptedPassword
     });
-}
-
-async function imageExistsOrNot(url: string){
-    const imageFound = await imageRepository.findImageByUrl(url);
-    if(imageFound) return imageFound.id;
-
-    await imageRepository.createImage(url);
-    const createImage = await imageRepository.findImageByUrl(url);
-    if(!createImage) throw notFoundError('Image not found');
-
-    return createImage.id;
 }
 
 async function addressExistsOrNot(city: string, state: string){

@@ -18,7 +18,7 @@ async function createUser(user: UserData) {
     await userRepository.createUser({ name, email, password: passwordEncrypted, imageId });
 }
 
-async function imageExistsOrNot(url: string){
+export async function imageExistsOrNot(url: string){
     const imageExists = await imageRepository.findImageByUrl(url);
     if(imageExists) return imageExists.id;
 
