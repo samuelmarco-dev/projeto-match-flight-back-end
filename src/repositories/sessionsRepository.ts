@@ -24,11 +24,27 @@ export async function findSessionCompany(token: string){
     });
 }
 
+export async function invalidateSessionUser(token: string){
+    await prisma.sessionUser.update({
+        where: { token },
+        data: { isActive: false, updatedAt: new Date() }
+    });
+}
+
+export async function invalidateSessionCompany(token: string){
+    await prisma.sessionCompany.update({
+        where: { token },
+        data: { isActive: false, updatedAt: new Date() }
+    });
+}
+
 const sessionRepository = {
     createSessionUser,
     createSessionCompany,
     findSessionUser,
-    findSessionCompany
+    findSessionCompany,
+    invalidateSessionUser,
+    invalidateSessionCompany
 }
 
 export default sessionRepository;

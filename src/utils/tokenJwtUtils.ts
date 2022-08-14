@@ -28,6 +28,7 @@ export async function verifyJsonWebToken(token: string){
             session: await authTypeUserOrCompany(type, token)
         }
     } catch (error) {
+        await invalidateToken(token);
         if(error.name === 'TokenExpiredError') throw unauthorizedError('Token expired');
         throw unauthorizedError('Invalid token');
     }
@@ -36,14 +37,30 @@ export async function verifyJsonWebToken(token: string){
 async function authTypeUserOrCompany(type: string, token: string){
     if (type === 'userId'){
         const sessionUser = await sessionRepository.findSessionUser(token);
-        if (!sessionUser) throw notFoundError('Session user not found');
+        if (!sessionUser || !sessionUser.isActive) throw notFoundError('Session user not found');
         return sessionUser;
     }
     if (type === 'companyId'){
         const companySession = await sessionRepository.findSessionCompany(token);
-        if (!companySession) throw notFoundError('Session company not found');
+        if (!companySession || !companySession.isActive) throw notFoundError('Session company not found');
         return companySession;
     }
 
     throw unauthorizedError('Invalid auth type on token');
+}
+
+async function invalidateToken(token: string){
+    const tokenUser = await sessionRepository.findSessionUser(token);
+    if (tokenUser) {
+        await sessionRepository.invalidateSessionUser(token);
+        return;
+    }
+
+    const tokenCompany = await sessionRepository.findSessionCompany(token);
+    if (tokenCompany) {
+        await sessionRepository.invalidateSessionCompany(token);
+        return;
+    }
+
+    throw notFoundError('Token not found');
 }
