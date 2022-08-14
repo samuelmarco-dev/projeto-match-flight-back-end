@@ -21,7 +21,11 @@ export async function verifyJsonWebToken(token: string){
     try {
         const verification = jwt.verify(token, secret);
         const { id, type } = verification as TokenPayload;
-        if (!type || !id || !verification) throw unauthorizedError('Invalid token');
+
+        if (!type || !id || !verification) {
+            await invalidateToken(token);
+            throw unauthorizedError('Invalid token');
+        }
 
         return {
             type: type,

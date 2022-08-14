@@ -1,22 +1,21 @@
-import { jest } from "@jest/globals";
-import jwt from 'jsonwebtoken';
-import bcrypt from "bcrypt";
+// import { jest } from "@jest/globals";
+// import jwt from 'jsonwebtoken';
+// import bcrypt from "bcrypt";
 
-import userService from "../../src/services/userService.js";
-import userFactory from "../factories/userFactory.js";
-import imageFactory from "../factories/imageFactory.js";
-import userRepository from "../../src/repositories/userRepository.js";
-import { deleteAllTables } from "../factories/scenario.js";
-import imageRepository from "../../src/repositories/imageRepository.js";
-import sessionRepository from "../../src/repositories/sessionsRepository.js";
+// import userService from "../../src/services/userService.js";
+// import userFactory from "../factories/userFactory.js";
+// import userRepository from "../../src/repositories/userRepository.js";
+// import { deleteAllTables } from "../factories/scenario.js";
+// import imageRepository from "../../src/repositories/imageRepository.js";
+// import sessionRepository from "../../src/repositories/sessionsRepository.js";
 
-beforeEach(async ()=> {
-    await deleteAllTables();
-    jest.clearAllMocks();
-    jest.resetAllMocks();
-});
+// beforeEach(async ()=> {
+//     await deleteAllTables();
+//     jest.clearAllMocks();
+//     jest.resetAllMocks();
+// });
 
-describe('userService test suite', ()=> {
+//describe('userService test suite', ()=> {
     // it('should create a user', async ()=> {
     //     const imageExists = imageFactory.imageExistsInTestUnitary();
 
@@ -94,4 +93,4 @@ describe('userService test suite', ()=> {
     //     expect(jwt.sign).not.toBeCalled();
     //     expect(sessionRepository.createSessionUser).not.toBeCalled();
     // });
-});
+//});
