@@ -59,7 +59,7 @@ async function loginCompany(login: Login){
 
     const token = await generateJsonWebToken(companyExists.id, 'companyId');
     await sessionRepository.createSessionCompany(companyExists.id, token);
-    return { token };
+    return { token, companyId: companyExists.id };
 }
 
 const companyService = {
