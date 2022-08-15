@@ -40,7 +40,7 @@ async function loginUser(login: Login){
 
     const token = await generateJsonWebToken(userExists.id, 'userId');
     await sessionRepository.createSessionUser(userExists.id, token);
-    return { token, user: userExists.id };
+    return { token, userId: userExists.id };
 }
 
 const userService = {

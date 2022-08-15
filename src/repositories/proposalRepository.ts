@@ -16,12 +16,49 @@ export async function createProposalCompany(proposal: ProposalBody){
 
 export async function findManyByCompany(id: number){
     return await prisma.proposal.findMany({
+        select: {
+            id: true,
+            destiny: true,
+            year: true,
+            Image: {
+                select: { url: true }
+            },
+            Date: {
+                select: { start: true, end: true }
+            },
+            Boarding: {
+                select: { initials: true }
+            },
+            Landing: {
+                select: { initials: true }
+            }
+        },
         where: { companyId: id, isActive: true }
     });
 }
 
 export async function findAllProposals(){
     return await prisma.proposal.findMany({
+        select: {
+            id: true,
+            destiny: true,
+            year: true,
+            Image: {
+                select: { url: true }
+            },
+            Date: {
+                select: { start: true, end: true }
+            },
+            Airline: {
+                select: { name: true, initials: true }
+            },
+            Boarding: {
+                select: { name: true, initials: true }
+            },
+            Landing: {
+                select: { name: true, initials: true }
+            }
+        },
         where: { isActive: true }
     });
 }
