@@ -30,7 +30,7 @@ async function createProposal(proposal: ProposalService, type: TypeProposal){
 
 function verifyYear(year: number) {
     const currentYear = dayjs().year();
-    if (year < currentYear || year > currentYear) throw wrongSchemaError('The year is not valid');
+    if (year < currentYear || year > (currentYear + 4)) throw wrongSchemaError('The year is not valid');
 }
 
 function verifyYearInDate(year: number){

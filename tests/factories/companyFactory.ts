@@ -1,4 +1,6 @@
 import { faker } from '@faker-js/faker';
+import supertest from 'supertest';
+import app from '../../src/app.js';
 
 import prisma from '../../src/config/database.js';
 import { CompanyData, Login } from '../../src/interfaces/index.js';
@@ -6,7 +8,7 @@ import { addressExistsOrNot, cnpjExistsOrNot } from '../../src/services/companyS
 import { imageExistsOrNot } from '../../src/services/userService.js';
 import { encrytedPassword } from '../../src/utils/encryptedPassUtils.js';
 
-function getRandomInt(min: number, max: number) {
+export function getRandomInt(min: number, max: number) {
     min = Math.ceil(min);
     max = Math.floor(max);
     return Math.floor(Math.random() * (max - min) + min);
@@ -54,10 +56,23 @@ function companyLogin(): Login {
     }
 }
 
+async function companyLoginFlow(){
+    const email = faker.internet.email().toLowerCase();
+    const company = generateCompany();
+    await createCompanyForConflict({ ...company, email, password: '123456789' });
+
+    const response = await supertest(app).post('/company/sign-in').send({ email, password: '123456789' });
+    expect(response.status).toBe(200);
+    expect(response.body.token).not.toBeNull();
+
+    return { response, email };
+}
+
 const companyFactory = {
     generateCompany,
     createCompanyForConflict,
-    companyLogin
+    companyLogin,
+    companyLoginFlow
 }
 
 export default companyFactory;
