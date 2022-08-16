@@ -6,6 +6,7 @@ import * as dateRepository from "../repositories/dateRepository.js";
 import * as boardingRepository from "../repositories/boardingRepository.js";
 import * as landingRepository from "../repositories/landingRepository.js";
 import * as proposalRepository from "../repositories/proposalRepository.js";
+import * as userRepository from "../repositories/userRepository.js";
 import { ProposalService, TypeProposal } from "../interfaces/index.js";
 import { conflictError, notFoundError, wrongSchemaError } from "../utils/errorUtils.js";
 import { imageExistsOrNot } from './userService.js';
@@ -107,7 +108,10 @@ async function getProposalsByCompany(companyId: number){
     return { proposals: proposalsCompany };
 }
 
-async function getProposalsOfferedByCompanies(){
+async function getProposalsOfferedByCompanies(userId: number){
+    const userFound = await userRepository.findUserById(userId);
+    if(!userFound) notFoundError('User not found');
+
     return { proposals: await proposalRepository.findAllProposals() };
 }
 

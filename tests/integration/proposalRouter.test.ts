@@ -8,6 +8,7 @@ import companyFactory, { getRandomInt } from "../factories/companyFactory.js";
 import proposalFactory from "../factories/proposalFactory.js";
 import { deleteAllTables, deleteTablesWithoutDependency } from "../factories/scenario.js";
 import tokenFactory from "../factories/tokenFactory.js";
+import userFactory from "../factories/userFactory.js";
 
 beforeAll(async()=> {
     await deleteAllTables();
@@ -76,14 +77,14 @@ describe('POST /proposal', ()=> {
     it('given a company exists and a valid proposal, but with invalid token should return status code 404', async()=> {
         const { email } = await companyFactory.companyLoginFlow();
         const proposal = proposalFactory.generateProposal();
-        const inavalidToken = tokenFactory.generateInvalidToken();
+        const invalidToken = tokenFactory.generateInvalidToken();
 
         const companyCreate = await prisma.company.findUnique({
             where: { email }
         });
         expect(companyCreate).not.toBeNull();
 
-        const response = await supertest(app).post('/proposal').set('Authorization', `Bearer ${inavalidToken}`)
+        const response = await supertest(app).post('/proposal').set('Authorization', `Bearer ${invalidToken}`)
         .send({ ...proposal, companyId: companyCreate.id });
         expect(response.status).toBe(404);
     });
@@ -102,13 +103,125 @@ describe('POST /proposal', ()=> {
     });
 });
 
-// describe('GET /proposals/company/:id', ()=> {
-//     //TODO: para buscar as propostas que foram criar pela empresa :id, a empresa deve estar autenticada
-// });
+describe('GET /proposals/company/:id', ()=> {
+    it('given a company exists and a valid token, should return status code 200', async()=> {
+        const { response: login, email } = await companyFactory.companyLoginFlow();
 
-// describe('GET /proposals/user', ()=> {
-//     //TODO: para buscar todas as propostas oferecidas para o usuário, o usuário deve estar autenticado
-// });
+        const companyCreate = await prisma.company.findUnique({
+            where: { email }
+        });
+        expect(companyCreate).not.toBeNull();
+
+        const response = await supertest(app).get(`/proposals/company/${companyCreate.id}`)
+        .set('Authorization', `Bearer ${login.body.token}`);
+        expect(response.status).toBe(200);
+    });
+
+    it('given a company nonexistent and a valid token, should return status code 401', async()=> {
+        const { response: login, email } = await companyFactory.companyLoginFlow();
+
+        const companyCreate = await prisma.company.findUnique({
+            where: { email }
+        });
+        expect(companyCreate).not.toBeNull();
+
+        const response = await supertest(app).get(`/proposals/company/${companyCreate.id + getRandomInt(10, 20)}`)
+        .set('Authorization', `Bearer ${login.body.token}`);
+        expect(response.status).toBe(401);
+    });
+
+    it('given a company exists and a invalid token, should return status code 404', async()=> {
+        const { email } = await companyFactory.companyLoginFlow();
+        const invalidToken = tokenFactory.generateInvalidToken();
+
+        const companyCreate = await prisma.company.findUnique({
+            where: { email }
+        });
+        expect(companyCreate).not.toBeNull();
+
+        const response = await supertest(app).get(`/proposals/company/${companyCreate.id}`)
+        .set('Authorization', `Bearer ${invalidToken}`);
+        expect(response.status).toBe(404);
+    });
+
+    it('given a company exists, but with no token should return status code 401', async()=> {
+        const { email } = await companyFactory.companyLoginFlow();
+
+        const companyCreate = await prisma.company.findUnique({
+            where: { email }
+        });
+        expect(companyCreate).not.toBeNull();
+
+        const response = await supertest(app).get(`/proposals/company/${companyCreate.id}`);
+        expect(response.status).toBe(401);
+    });
+
+    it('given a company exists and token with type: userId, should return status code 401', async()=> {
+        const { email } = await companyFactory.companyLoginFlow();
+        const { response: login } = await userFactory.userLoginFlow();
+
+        const companyCreate = await prisma.company.findUnique({
+            where: { email }
+        });
+        expect(companyCreate).not.toBeNull();
+
+        const response = await supertest(app).get(`/proposals/company/${companyCreate.id}`)
+        .set('Authorization', `Bearer ${login.body.token}`);
+        expect(response.status).toBe(401);
+    });
+});
+
+describe('GET /proposals/user', ()=> {
+    it('given a user exists and a valid token, should return status code 200', async()=> {
+        const { response: login, email } = await userFactory.userLoginFlow();
+
+        const userCreate = await prisma.user.findUnique({
+            where: { email }
+        });
+        expect(userCreate).not.toBeNull();
+
+        const response = await supertest(app).get(`/proposals/user`).set('Authorization', `Bearer ${login.body.token}`);
+        expect(response.status).toBe(200);
+    });
+
+    it('given a user exists, but with no token should return status code 401', async()=> {
+        const { email } = await userFactory.userLoginFlow();
+
+        const userCreate = await prisma.user.findUnique({
+            where: { email }
+        });
+        expect(userCreate).not.toBeNull();
+
+        const response = await supertest(app).get(`/proposals/user`);
+        expect(response.status).toBe(401);
+    });
+
+    it('given a user exists and a invalid token, should return status code 404', async()=> {
+        const { email } = await userFactory.userLoginFlow();
+        const invalidToken = tokenFactory.generateInvalidToken();
+
+        const userCreate = await prisma.user.findUnique({
+            where: { email }
+        });
+        expect(userCreate).not.toBeNull();
+
+        const response = await supertest(app).get(`/proposals/user`).set('Authorization', `Bearer ${invalidToken}`);
+        expect(response.status).toBe(404);
+    });
+
+    it('given a user exists and token with type: companyId, should return status code 401', async()=> {
+        const { email } = await userFactory.userLoginFlow();
+        const { response: login } = await companyFactory.companyLoginFlow();
+
+        const userCreate = await prisma.user.findUnique({
+            where: { email }
+        });
+        expect(userCreate).not.toBeNull();
+
+        const response = await supertest(app).get(`/proposals/user`).set('Authorization', `Bearer ${login.body.token}`);
+        expect(response.status).toBe(401);
+    });
+});
 
 afterAll(async()=> {
     await prisma.$disconnect();

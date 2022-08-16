@@ -1,4 +1,6 @@
 import { faker } from '@faker-js/faker';
+import supertest from 'supertest';
+import app from '../../src/app.js';
 
 import prisma from '../../src/config/database.js';
 import { UserData, Login } from '../../src/interfaces/index.js';
@@ -38,10 +40,23 @@ function userLogin(): Login {
     }
 }
 
+async function userLoginFlow(){
+    const email = faker.internet.email().toLowerCase();
+    const user = generateUser();
+    await createUserForConflict({ ...user, email, password: '123456789' });
+
+    const response = await supertest(app).post('/user/sign-in').send({ email, password: '123456789' });
+    expect(response.status).toBe(200);
+    expect(response.body.token).not.toBeNull();
+
+    return { response, email };
+}
+
 const userFactory = {
     generateUser,
     createUserForConflict,
-    userLogin
+    userLogin,
+    userLoginFlow
 };
 
 export default userFactory;
