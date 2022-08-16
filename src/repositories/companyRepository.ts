@@ -19,6 +19,10 @@ export async function findCompanyById(id: number){
     });
 }
 
+export async function deleteAllCompanies(){
+    await prisma.$executeRaw`TRUNCATE TABLE "companies" CASCADE;`;
+}
+
 const companyRepository = {
     findCompanyByEmail,
     createCompany,

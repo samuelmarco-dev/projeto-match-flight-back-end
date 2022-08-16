@@ -115,10 +115,15 @@ async function getProposalsOfferedByCompanies(userId: number){
     return { proposals: await proposalRepository.findAllProposals() };
 }
 
+async function deleteAllProposals(){
+    await proposalRepository.deleteAllProposals();
+}
+
 const proposalService = {
     createProposal,
     getProposalsByCompany,
-    getProposalsOfferedByCompanies
+    getProposalsOfferedByCompanies,
+    deleteAllProposals
 }
 
 export default proposalService;

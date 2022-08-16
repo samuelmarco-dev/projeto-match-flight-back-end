@@ -63,11 +63,16 @@ export async function findAllProposals(){
     });
 }
 
+export async function deleteAllProposals(){
+    await prisma.$executeRaw`TRUNCATE TABLE "proposals" CASCADE;`;
+}
+
 const proposalRepository = {
     findProposalCompany,
     createProposalCompany,
     findManyByCompany,
-    findAllProposals
+    findAllProposals,
+    deleteAllProposals
 }
 
 export default proposalRepository;

@@ -19,6 +19,10 @@ export async function findUserById(id: number){
     });
 }
 
+export async function deleteAllUsers(){
+    await prisma.$executeRaw`TRUNCATE TABLE "users" CASCADE;`;
+}
+
 const userRepository = {
     findUserByEmail,
     createUser,

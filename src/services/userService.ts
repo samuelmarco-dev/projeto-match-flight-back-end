@@ -43,9 +43,14 @@ async function loginUser(login: Login){
     return { token, userId: userExists.id };
 }
 
+async function deleteAllUsers(){
+    await userRepository.deleteAllUsers();
+}
+
 const userService = {
     createUser,
-    loginUser
+    loginUser,
+    deleteAllUsers
 }
 
 export default userService;

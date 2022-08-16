@@ -62,9 +62,14 @@ async function loginCompany(login: Login){
     return { token, companyId: companyExists.id };
 }
 
+async function deleteAllCompanies(){
+    await companyRepository.deleteAllCompanies();
+}
+
 const companyService = {
     createCompany,
-    loginCompany
+    loginCompany,
+    deleteAllCompanies
 }
 
 export default companyService;
