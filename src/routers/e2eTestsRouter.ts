@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { deleteAllCompanies, deleteAllProposals, deleteAllUsers } from "../controllers/e2eTestsController";
+import { deleteAllCompanies, deleteAllProposals, deleteAllUsers } from "../controllers/e2eTestsController.js";
 
 const e2eTestsRouter = Router();
 
