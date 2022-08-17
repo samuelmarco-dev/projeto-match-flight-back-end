@@ -1,5 +1,5 @@
-import express, { json } from "express";
 import "express-async-errors";
+import express, { json } from "express";
 import cors from "cors";
 import morgan from "morgan";
 import helmet from "helmet";
