@@ -3,14 +3,14 @@
     "version": "1.0.0",
     "description": "",
     "engines": {
-        "node": "16.14.0",
-        "npm": "8.12.2"
+        "node": "16.x",
+        "npm": "8.x"
     },
     "type": "module",
     "main": "server.js",
     "scripts": {
         "build": "tsc",
-        "start": "node dist/server.js",
+        "start": "node ./dist/server.js",
         "dev": "nodemon src/server.ts",
         "dev:test": "dotenv -e .test.env nodemon src/server.ts",
         "test": "dotenv -e .test.env prisma migrate dev && NODE_OPTIONS=--experimental-vm-modules dotenv -e .test.env jest -- -i --coverage",
