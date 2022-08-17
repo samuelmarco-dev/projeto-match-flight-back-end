@@ -2,6 +2,10 @@
     "name": "match-flight-back-end",
     "version": "1.0.0",
     "description": "",
+    "engines": {
+        "node": "16.14.0",
+        "npm": "8.12.2"
+    },
     "type": "module",
     "main": "server.js",
     "scripts": {
